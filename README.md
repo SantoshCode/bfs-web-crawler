@@ -1,3 +1,3 @@
 # BFS web crawler
 
-![screenshot]('ss.png')
+![screenshot](ss.png)
