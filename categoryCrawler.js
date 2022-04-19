@@ -1,34 +1,33 @@
-const axios = require('axios')
-const cheerio = require('cheerio')
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 const categoryCrawler = async (url, filter) => {
-	const { data } = await axios.get(url)
-	const $ = cheerio.load(data)
+  const { data } = await axios.get(url);
+  const $ = cheerio.load(data);
 
-	const htmlList = $(filter)
+  const htmlList = $(filter);
 
-	const _data = []
+  const _data = [];
 
-	htmlList.each((_i, ele) => {
-		const title = $(ele).text()
-		const lenCheck =
-			title.split(' ').length === 1 &&
-			title !== 'Home' &&
-			title !== 'Reel' &&
-			title !== 'Weather' &&
-			title !== 'Worklife' &&
-			title !== 'Future'
+  htmlList.each((_i, ele) => {
+    const title = $(ele).text();
+    const lenCheck =
+      title.split(" ").length === 1 &&
+      title !== "Home" &&
+      title !== "Reel" &&
+      title !== "Weather" &&
+      title !== "Worklife" &&
+      title !== "Future";
 
-		const href = $(ele).attr('href')
-		lenCheck &&
-			_data.push({
-				title,
-				href: href.startsWith('https')
-					? href
-					: `https://www.bbc.com${href}`,
-			})
-	})
-	return _data
-}
+    const href = $(ele).attr("href");
+    lenCheck &&
+      _data.push({
+        cat: href.split("/").pop(),
+        title,
+        href: href.startsWith("https") ? href : `https://www.bbc.com${href}`,
+      });
+  });
+  return _data;
+};
 
-module.exports = { categoryCrawler }
+module.exports = { categoryCrawler };
