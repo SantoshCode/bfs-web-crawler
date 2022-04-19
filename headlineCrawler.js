@@ -16,7 +16,7 @@ const headLineCrawler = async url => {
 		const title = $(ele).text()
 		const lenCheck = title.split(' ').length === 1
 
-		!lenCheck && headlineData.push(title)
+		!lenCheck && headlineData.push({title, category})
 	})
 	return headlineData
 }

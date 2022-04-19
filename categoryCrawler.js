@@ -16,6 +16,7 @@ const categoryCrawler = async (url, filter) => {
 			title !== 'Home' &&
 			title !== 'Reel' &&
 			title !== 'Weather' &&
+			title !== 'Worklife' &&
 			title !== 'Future'
 
 		const href = $(ele).attr('href')

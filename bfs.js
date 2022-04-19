@@ -1,24 +1,36 @@
-const { levelCrawler } = require('./levelCrawler')
+const { levelCrawler } = require("./levelCrawler")
 
-async function bfs(start, adjacencyList) {
-	const visited = new Set()
-	const queue = [start]
+const bfs = async (start, level) => {
+    const queue = [{
+        href: start, level: 1
+    }]
+    const visited = new Set()
 
-	while (queue.length > 0) {
-		const url = queue.shift()
-		const urlChildren = adjacencyList.get(url)
-		for (const url of urlChildren) {
-			if (url) {
-				// crawling child url
-				const data = await levelCrawler(3, { href: url })
-				return data
-			}
-			if (!visited.has(url)) {
-				visited.add(url)
-				queue.push(url)
-			}
-		}
-	}
+    console.log({queue})
+    const headlines = []
+
+    while(queue.length > 0){
+        const item = queue.shift()
+
+        const children = await levelCrawler(item)
+
+        console.log({children})
+
+        for (const child of children){
+            if(child?.title){
+                headlines.push(child)
+            }
+            else if(!visited.has(child.href)) {
+                visited.add(child.href)
+                queue.push(child)
+           }
+        }
+        if(children[0]?.level !== 4 && children[0]?.level > level ) {
+                break
+        }
+    }
+    console.log({visited})
+    console.log({headlines})
 }
 
-module.exports = { bfs }
+bfs('https://bbc.com', 3)
